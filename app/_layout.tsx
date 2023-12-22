@@ -15,6 +15,14 @@ export {
 	// Catch any errors thrown by the Layout component.
 	ErrorBoundary,
 } from 'expo-router'
+import * as Sentry from 'sentry-expo'
+import Constants from 'expo-constants'
+
+Sentry.init({
+	dsn: Constants.expoConfig?.extra?.SENTRY_DSN,
+	enableInExpoDevelopment: true,
+	debug: true, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+})
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -68,7 +76,10 @@ const App = () => {
 	})
 	
 	useEffect(() => {
-		if (error) throw error
+		if (error) {
+			Sentry.Native.captureMessage('Error from getSession()')
+			Sentry.Native.captureException(error)
+		}
 		if (!isPending) SplashScreen.hideAsync()
 	}, [error, isPending])
 	

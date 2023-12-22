@@ -9,6 +9,7 @@ import { MonoText } from '../../src/components/StyledText'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'expo-router'
 import { makeRedirectUri } from 'expo-auth-session'
+import * as Sentry from 'sentry-expo'
 
 const redirectTo = makeRedirectUri()
 
@@ -42,6 +43,8 @@ export default function Auth() {
 			)
 		},
 		onError: (error) => {
+			Sentry.Native.captureMessage('Error returned from signing in')
+			Sentry.Native.captureException(error)
 			setLoading(false)
 			Alert.alert(error.message)
 		},
@@ -60,6 +63,8 @@ export default function Auth() {
 			Alert.alert('Check your email for email verification!')
 		},
 		onError: (error) => {
+			Sentry.Native.captureMessage('Error returned from signing up')
+			Sentry.Native.captureException(error)
 			setLoading(false)
 			Alert.alert(error.message)
 		},

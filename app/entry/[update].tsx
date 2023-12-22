@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Entry } from '../../src/interface/interface'
 import { SessionContext } from '../../src/context/SessionContext'
 import { supabase } from '../../src/utils/Supabase'
+import * as Sentry from 'sentry-expo'
 
 const update = () => {
 	const theme = useColorScheme()
@@ -22,7 +23,6 @@ const update = () => {
 	const [title, setTitle] = React.useState<string>(entry.title)
 	const [description, setDescription] = React.useState<string>(entry.description)
 	const [colorSelected, setColorSelected] = React.useState<string>(entry.color)
-	
 
 	const updateMutation = useMutation({
 		mutationFn: async () => {
@@ -31,7 +31,10 @@ const update = () => {
 				description,
 				color: colorSelected
 			}).eq('id', entry.id)
-			if (error) throw error
+			if (error) {
+				Sentry.Native.captureMessage('Error returned from updating entry')
+				Sentry.Native.captureException(error)
+			}
 			return data
 		},
 		onSuccess: () => {
@@ -41,6 +44,10 @@ const update = () => {
 			setTitle('')
 			setDescription('')
 			setColorSelected('')
+		},
+		onError: (error) => {
+			Sentry.Native.captureMessage('Error caught from updating entry')
+			Sentry.Native.captureException(error)
 		}
 	})
   
