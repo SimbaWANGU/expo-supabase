@@ -21,8 +21,20 @@ interface UserProfile {
   username: string | null;
 }
 
+interface Entry {
+  color: string;
+  description: string;
+  favorite: boolean;
+  id: number;
+  time_updated: string;
+  title: string;
+  user_id: string;
+}
+
+
 
 export {
 	Store,
-	UserProfile
+	UserProfile,
+	Entry
 }

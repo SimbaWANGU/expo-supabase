@@ -10,14 +10,32 @@ const light = {
 } 
 
 const dark = {
-	appBaseColor: '#22444EE',
+	appBaseColor: '#2244EE',
 	appBaseColorTwo: '#3399FF',
 	appBaseColorThree: '#ffc300',
 	appBaseColorFour: '#ffd60a',
 	appBaseColorFive: '#',
 	text: '#f0f0f0',
 	background: '#040404',
-	tint: 'rgba(255, 255, 255, 0.1)'
+	tint: 'rgba(255, 255, 255, 0.7)'
 }
 
-export { light, dark }
+const colors = [
+	'red',
+	'orange',
+	'yellow',
+	'green',
+	'blue',
+	'purple',
+	'pink',
+	'gray',
+	'black',
+	'white',
+	'brown',
+	'cyan',
+	'indigo',
+	'teal',
+	'lime'
+]
+
+export { light, dark, colors }
