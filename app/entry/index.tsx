@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../../src/utils/Supabase'
 import { SessionContext } from '../../src/context/SessionContext'
 import { useRouter } from 'expo-router'
+import * as Sentry from 'sentry-expo'
 
 const add = () => {
 	const theme = useColorScheme()
@@ -30,7 +31,10 @@ const add = () => {
 				favorite: false,
 				user_id: session?.user.id
 			})
-			if (error) throw error
+			if (error) {
+				Sentry.Native.captureMessage('Error returned from creating entry')
+				Sentry.Native.captureException(error)
+			}
 			return data
 		},
 		onSuccess: () => {
@@ -54,6 +58,8 @@ const add = () => {
 			)
 		},
 		onError: (error) => {
+			Sentry.Native.captureMessage('Error caught from creating entry')
+			Sentry.Native.captureException(error)
 			setLoading(false)
 			Alert.alert(error.message)
 		}
@@ -134,7 +140,7 @@ const add = () => {
 					disabled={loading}
 				>
 					<MonoText
-						style={tw`text-2xl text-center`}
+						style={tw`text-lg text-center`}
 						lightColor={light.appBaseColorThree}
 						darkColor={dark.appBaseColorFour}
 					>Post</MonoText>

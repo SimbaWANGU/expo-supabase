@@ -10,6 +10,7 @@ import { supabase } from '../../src/utils/Supabase'
 import { UserProfile } from '../../src/interface/interface'
 import { View } from '../../src/components/Themed'
 import { MonoText } from '../../src/components/StyledText'
+import * as Sentry from 'sentry-expo'
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
@@ -31,10 +32,15 @@ export default function TabLayout() {
 		queryFn: async () => {
 			try {
 				const { data, error, status } = await supabase.from('profiles').select('*').eq('id', session?.user.id).single()
-				if (error && status !== 406) return {} as UserProfile
+				if (error && status !== 406) { 
+					Sentry.Native.captureMessage('Error returned from fetching profile, status code: ' + status)
+					Sentry.Native.captureException(error)
+					return {} as UserProfile
+				}
 				if (data)	return data as UserProfile
 			} catch (error) {
-				console.log('error', error)
+				Sentry.Native.captureMessage('Error catched from get user profile')
+				Sentry.Native.captureException(error)
 				return {} as UserProfile
 			}
 		}
@@ -64,7 +70,7 @@ export default function TabLayout() {
 								<MonoText
 									style={tw`p-4 absolute text-lg`}
 									lightColor={light.appBaseColorTwo}
-									darkColor={dark.appBaseColorTwo}
+									darkColor={dark.appBaseColorThree}
 								>{'@' + data?.username}</MonoText>
 								<Pressable
 									onPress={() => router.push('/profile')}
@@ -91,7 +97,7 @@ export default function TabLayout() {
 								style={tw`absolute right-0 p-4`}
 								onPress={() => router.push('/settings')}
 							>
-								<TabBarIcon name="gear" color={theme === 'light' ? light.appBaseColorTwo : dark.appBaseColorTwo} />
+								<TabBarIcon name="gear" color={theme === 'light' ? light.appBaseColor : dark.appBaseColorThree} />
 							</Pressable>
 						)
 					},

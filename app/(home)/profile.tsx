@@ -12,6 +12,7 @@ import Card from '../../src/components/Card/Card'
 import { supabase } from '../../src/utils/Supabase'
 import { useRouter } from 'expo-router'
 import { AntDesign, MaterialIcons } from '@expo/vector-icons'
+import * as Sentry from 'sentry-expo'
 
 const profile = () => {
 	const theme = useColorScheme()
@@ -40,7 +41,10 @@ const profile = () => {
 	const deleteMutation = useMutation({
 		mutationFn: async (id: number) => {
 			const { data, error } = await supabase.from('entries').delete().eq('id', id)
-			if (error) throw error
+			if (error) {
+				Sentry.Native.captureMessage('Error returned from deleting entry')
+				Sentry.Native.captureException(error)
+			}
 			return data
 		},
 		onSuccess: () => {
@@ -59,6 +63,8 @@ const profile = () => {
 			)
 		},
 		onError: (error) => {
+			Sentry.Native.captureMessage('Error caught from deleting entry')
+			Sentry.Native.captureException(error)
 			Alert.alert(
 				'Unable To Complete Action',
 				error.message,
@@ -103,11 +109,19 @@ const profile = () => {
 						>{session?.user.email}</QuickSandText>
 					</View>
 					<View style={tw`flex flex-col text-right absolute right-6 bottom-0`}>
-						<MonoText style={tw`text-xl text-right items-center`}><MaterialIcons name="text-snippet" color={useColorScheme() === 'light' ? light.appBaseColor : dark.appBaseColor} /> {entries.length}</MonoText>
+						<MonoText
+							style={tw`text-xl text-right`}
+							lightColor={light.appBaseColor}
+							darkColor={dark.text}
+						><MaterialIcons name="text-snippet" color={useColorScheme() === 'light' ? light.appBaseColor : dark.appBaseColorThree} /> {entries.length}</MonoText>
 						<Pressable
 							onPress={() => setFavoriteSelected(!favoriteSelected)}
 						>
-							<MonoText style={tw`text-lg text-right`}><AntDesign name="star" color={useColorScheme() === 'light' ? light.appBaseColor : dark.appBaseColor} /> {entries.filter((entry) => entry.favorite).length}</MonoText>
+							<MonoText
+								style={tw`text-lg text-right`}
+								lightColor={light.appBaseColor}
+								darkColor={dark.text}
+							><AntDesign name="star" color={useColorScheme() === 'light' ? light.appBaseColor : dark.appBaseColorThree} /> {entries.filter((entry) => entry.favorite).length}</MonoText>
 						</Pressable>
 					</View>
 				</View>

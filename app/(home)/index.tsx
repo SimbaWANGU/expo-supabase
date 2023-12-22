@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { SessionContext } from '../../src/context/SessionContext'
 import { Entry } from '../../src/interface/interface'
 import { supabase } from '../../src/utils/Supabase'
+import * as Sentry from 'sentry-expo'
 
 export default function Home() {
 	const session = useContext(SessionContext)
@@ -25,10 +26,15 @@ export default function Home() {
 					.select('*')
 					.eq('user_id', session?.user.id)
 					.order('time_updated', { ascending: false })
-				if (error && status !== 406) return []
+				if (error && status !== 406) { 
+					Sentry.Native.captureMessage('Error returned from fetching profile, status code: ' + status)
+					Sentry.Native.captureException(error)
+					return []
+				}
 				if (data)	return data as Entry[]
 			} catch (error) {
-				console.log('error', error)
+				Sentry.Native.captureMessage('Error catched from get user profile')
+				Sentry.Native.captureException(error)
 				return []
 			}
 		}
@@ -37,7 +43,10 @@ export default function Home() {
 	const deleteMutation = useMutation({
 		mutationFn: async (id: number) => {
 			const { data, error } = await supabase.from('entries').delete().eq('id', id)
-			if (error) throw error
+			if (error) {
+				Sentry.Native.captureMessage('Error returned from deleting entry')
+				Sentry.Native.captureException(error)
+			}
 			return data
 		},
 		onSuccess: () => {
@@ -56,6 +65,8 @@ export default function Home() {
 			)
 		},
 		onError: (error) => {
+			Sentry.Native.captureMessage('Error caught from deleting entry')
+			Sentry.Native.captureException(error)
 			Alert.alert(
 				'Unable To Complete Action',
 				error.message,

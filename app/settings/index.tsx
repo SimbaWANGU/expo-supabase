@@ -10,6 +10,7 @@ import { Input } from 'react-native-elements'
 import { UserProfile } from '../../src/interface/interface'
 import { MonoText } from '../../src/components/StyledText'
 import { useRouter } from 'expo-router'
+import * as Sentry from 'sentry-expo'
 
 const settings = () => {
 	const session = useContext(SessionContext)
@@ -31,7 +32,10 @@ const settings = () => {
 				avatar_url: null,
 				bio
 			}).eq('id', session?.user.id).single()
-			if (error) throw error
+			if (error) {
+				Sentry.Native.captureMessage('Error returned from updating profile')
+				Sentry.Native.captureException(error)
+			}
 			return data
 		},
 		onSuccess: () => {
@@ -52,6 +56,8 @@ const settings = () => {
 			})
 		},
 		onError: (error) => {
+			Sentry.Native.captureMessage('Error caught from updating profile')
+			Sentry.Native.captureException(error)
 			setLoading(false)
 			Alert.alert(
 				'Profile update failed!',
@@ -64,7 +70,6 @@ const settings = () => {
 					},
 				],  
 			)
-			console.log(error)
 		},
 	})
 
