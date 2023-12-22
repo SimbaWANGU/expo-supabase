@@ -6,7 +6,7 @@ Sera is a note taking app, built for fun with the intention of writing down rand
 
 To start the app, you can download an android version here [Android](https://expo.dev/artifacts/eas/e4LUppSMqf7aeeefkK2XnE.apk). 
 
-This will attempt to download the android apk. The android OS will throw you a couple of warnings sicne it's not a registered app. Heck, it'not even finished anyway.
+This will attempt to download the android apk. The android OS will throw you a couple of warnings since it's not a registered app. Heck, it'not even finished anyway.
 
 ## Tech Stack
 
