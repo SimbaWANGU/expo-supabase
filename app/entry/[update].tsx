@@ -107,7 +107,7 @@ const update = () => {
 					onPress={() => updateMutation.mutate()}
 				>
 					<MonoText
-						style={tw`text-2xl text-center`}
+						style={tw`text-lg text-center`}
 						lightColor={light.appBaseColorThree}
 						darkColor={dark.appBaseColorFour}
 					>Update</MonoText>

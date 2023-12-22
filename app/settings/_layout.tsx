@@ -41,7 +41,7 @@ export default function SettingsLayout() {
 									<AntDesign
 										name={'arrowleft'}
 										size={30}
-										color={useColorScheme() === 'dark' ? dark.appBaseColorTwo : light.appBaseColor}
+										color={useColorScheme() === 'dark' ? dark.appBaseColorThree : light.appBaseColor}
 									/>
 								</Pressable>
 								<Image
@@ -50,7 +50,8 @@ export default function SettingsLayout() {
 								/>
 							</View>
 						)
-					}
+					},
+					presentation: 'modal',
 				}}
 				getId={() => String(Date.now()) }	
 			/>

@@ -97,7 +97,7 @@ export default function TabLayout() {
 								style={tw`absolute right-0 p-4`}
 								onPress={() => router.push('/settings')}
 							>
-								<TabBarIcon name="gear" color={theme === 'light' ? light.appBaseColorTwo : dark.appBaseColorTwo} />
+								<TabBarIcon name="gear" color={theme === 'light' ? light.appBaseColor : dark.appBaseColorThree} />
 							</Pressable>
 						)
 					},
