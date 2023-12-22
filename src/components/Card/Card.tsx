@@ -50,7 +50,8 @@ const Card: React.FC<CardProps> = ({ id, title, description, color, favorite, ti
 	return (
 		<View
 			style={[tw`h-auto w-11/12 self-center rounded-lg shadow-lg`, {
-				borderWidth: theme === 'dark' ? 2 : 0,
+				borderLeftWidth: theme === 'dark' ? 2 : 0,
+				borderTopWidth: theme === 'dark' ? 2 : 0,
 				borderColor: theme === 'dark' ? color : 'tranparent'
 			}]}
 		>
@@ -81,9 +82,9 @@ const Card: React.FC<CardProps> = ({ id, title, description, color, favorite, ti
 					onPress={() => favoriteMutation.mutate()}
 				>
 					{isFavorite ? (
-						<AntDesign name="star" size={24} color={theme === 'light' ? light.appBaseColor : dark.appBaseColor} />
+						<AntDesign name="star" size={24} color={color} />
 					) : (
-						<AntDesign name="staro" size={24} color={theme === 'light' ? light.appBaseColor : dark.appBaseColor} />
+						<AntDesign name="staro" size={24} color={color} />
 					)}
 				</Pressable>
 				<MonoText
