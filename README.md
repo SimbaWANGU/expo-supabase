@@ -10,7 +10,7 @@ This will attempt to download the android apk. The android OS will throw you a c
 
 ## Tech Stack
 
-I love this part, let me geek of:
+I love this part, let me geek off:
 
 - Expo: A framework for building cross-platform apps with React Native.
 - React Native: A JavaScript framework for building native mobile apps.
