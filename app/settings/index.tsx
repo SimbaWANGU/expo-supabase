@@ -83,7 +83,7 @@ const settings = () => {
 			lightColor={light.background}
 			darkColor={dark.background}
 		>
-			<View style={tw`h-1/12 w-9/12 p-2`}>
+			<View style={tw`h-1/12 w-11/12 p-2`}>
 				<Input
 					label="Email"
 					style={{
@@ -93,7 +93,7 @@ const settings = () => {
 					disabled
 				/>
 			</View>
-			<View style={tw`h-1/12 w-9/12 p-2`}>
+			<View style={tw`h-1/12 w-11/12 p-2`}>
 				<Input
 					label="Username"
 					value={username || ''}
@@ -104,18 +104,20 @@ const settings = () => {
 					disabled={loading}
 				/>
 			</View>
-			<View style={tw`h-1/12 w-9/12 p-2`}>
+			<View style={tw`h-1/12 w-11/12 p-2`}>
 				<Input
 					label="Bio"
 					value={bio || ''}
 					style={{
 						color: theme === 'light' ? light.text : dark.text,
 					}}
+					multiline
+					maxLength={100}
 					onChangeText={(text) => setBio(text)}
 					disabled={loading}
 				/>
 			</View>
-			<View style={tw`h-1/12 w-9/12 p-2`}>
+			<View style={tw`h-1/12 w-6/12 p-2`}>
 				<Pressable
 					style={[tw`p-2 rounded-md`, {
 						backgroundColor: theme === 'light' ? light.appBaseColorTwo : dark.appBaseColorTwo,
@@ -126,7 +128,7 @@ const settings = () => {
 					<MonoText
 						style={tw`text-center text-lg p-1`}
 						lightColor={light.appBaseColorThree}  
-						darkColor={dark.appBaseColorThree}
+						darkColor={dark.appBaseColorFour}
 					>Update</MonoText>
 				</Pressable>
 			</View>
